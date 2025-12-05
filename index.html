@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>KHULNA UPDATE</title>
+     <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(120deg, #2e2372, #87291a 80%, #ffa646);
+             font-family: 'Montserrat', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: rgba(25, 10, 24, 0.85);
+            border-radius: 32px;
+            padding: 40px 24px;
+            box-shadow: 0px 8px 36px rgba(0,0,0,0.3);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 0 12px;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            color: #fff7;
+            font-size: 1.15rem;
+            margin-bottom: 32px;
+        }
+        .countdown {
+            background: #181818;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 34px 22px 24px;
+            margin-bottom: 10px;
+            border-top: 4px solid linear-gradient(90deg, #ffbd39 20%, #49ff39 100%);
+        }
+        .section {
+            flex: 1;
+            text-align: center;
+        }
+        .section label {
+            color: #ffe745;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1.3px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .digits {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.3rem;
+            font-family: 'Space Mono', monospace;
+        }
+        .digit {
+            background: #222;
+            color: #ff6163;
+            margin: 0 4px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0px 2px 12px #0005;
+            transition: transform 0.2s, color 0.2s;
+        }
+        .separator {
+            color: #fff;
+            font-size: 2rem;
+            margin: 0 4px;
+        }
+   </style>
+        </head>
+<body>
+
+<audio id="beep" src="beep.mp3" preload="auto"></audio>
+
+<div class="container">
+    <h1>KHULNA UNIVERSITY DEATHLINE</h1>
+    <div class="countdown">
+        <div class="section">
+            <label>DAYS</label>
+            <div class="digits" id="days"></div>
+        </div>
+        <div class="section">
+            <label>HOURS</label>
+            <div class="digits" id="hours"></div>
+        </div>
+        <div class="section">
+            <label>MINUTES</label>
+            <div class="digits" id="minutes"></div>
+        </div>
+        <div class="section">
+            <label>SECONDS</label>
+            <div class="digits" id="seconds"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+// -------- BEEP SETUP --------
+const beep = document.getElementById("beep");
+
+// Unlock audio on first click (Chrome rule)
+document.addEventListener("click", () => {
+    beep.play().then(() => {
+        beep.pause();
+        beep.currentTime = 0;
+        startCountdown();
+    });
+}, { once: true });
+
+// -------- DIGIT RENDER --------
+function pad(n) {
+    return n.toString().padStart(2, '0');
+}
+
+function renderDigits(id, num) {
+    const t = pad(num);
+    document.getElementById(id).innerHTML =
+        `<span class="digit">${t[0]}</span><span class="digit">${t[1]}</span>`;
+}
+
+// -------- COUNTDOWN + BEEP --------
+function startCountdown() {
+    setInterval(() => {
+        const target = new Date();
+        target.setMonth(11); 
+        target.setDate(19);
+        target.setHours(6,0,0,0);
+
+        const now = new Date();
+        let diff = (target - now) / 1000;
+
+        let days = Math.floor(diff / 86400);
+        let hours = Math.floor((diff % 86400) / 3600);
+        let minutes = Math.floor((diff % 3600) / 60);
+        let seconds = Math.floor(diff % 60);
+
+        if (diff < 0) {
+            days = hours = minutes = seconds = 0;
+        }
+
+        renderDigits("days", days);
+        renderDigits("hours", hours);
+        renderDigits("minutes", minutes);
+        renderDigits("seconds", seconds);
+
+        // ---- PLAY BEEP ----
+        beep.currentTime = 0;
+        beep.play();
+
+    }, 1000);
+}
+</script>
+
+</body>
+</html>
